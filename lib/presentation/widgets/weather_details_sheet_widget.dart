@@ -7,8 +7,8 @@ import 'package:lottie/lottie.dart';
 
 import '../../data/utils/utils.dart';
 
-class TimeScheduleSheet extends StatelessWidget {
-  const TimeScheduleSheet(
+class WeatherDetailsSheet extends StatelessWidget {
+  const WeatherDetailsSheet(
       {super.key, required this.controller, required this.theme});
 
   final ScrollController controller;
@@ -83,17 +83,35 @@ class TimeScheduleSheet extends StatelessWidget {
                       LottieBuilder.asset(AssetManager.WEATHER_ANIM['50d']!),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  title: const Text(
-                    'Wind Speed',
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Wind Speed',
+                      ),
+
+                      Text(
+                        'Humidity',
+                      ),
+                    ],
                   ),
                   titleTextStyle: theme.textTheme.labelLarge
                       ?.copyWith(color: Config.DEFAULT_TEXT_COLOR_LIGHT),
-                  subtitle: Text(
-                    '${state.currentWind.speed}m/s',
-                    style: theme.textTheme.titleLarge?.copyWith(
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${state.currentWind.speed}m/s',
+                      ),
+                      Text(
+                        '${state.currentsMainWeather.humidity}%',
+                      ),
+                    ],
+                  ),
+
+                  subtitleTextStyle: theme.textTheme.titleLarge?.copyWith(
                         color: Config.DEFAULT_TEXT_COLOR_LIGHT,
                         fontWeight: FontWeight.bold),
-                  ),
                 )
               ],
             );

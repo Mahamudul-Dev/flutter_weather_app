@@ -16,9 +16,9 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       (event, emit) async {
         try {
           final currentWeather =
-              await repository.serializeCurrentWeather(event.lat, event.lon);
+              await repository.serializeCurrentWeather(event.lat, event.lon, event.city);
           final forcastWeather =
-              await repository.serializeForcastWeather(event.lat, event.lon);
+              await repository.serializeForcastWeather(event.lat, event.lon, event.city);
           if (currentWeather != null && forcastWeather != null) {
             emit(WeatherDataLoaded(
                 currentWeather.weather!.first,
@@ -59,11 +59,10 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     if (dateTime == now) {
       // If the timestamp represents the current time
       return 'Now';
-    } else if (dateTime.year == now.year) {
+    } else if (dateTime.day == now.day) {
       // If the timestamp represents an hour in the current day
       String hour =
           DateFormat('h').format(dateTime); // Get the hour in 12-hour format
-      // String minute = DateFormat('mm').format(dateTime); // Get the minute
       String period =
           DateFormat('a').format(dateTime); // Get the period (AM/PM)
       return '$hour $period';
@@ -76,7 +75,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       // String minute = DateFormat('mm').format(dateTime); // Get the minute
       String period =
           DateFormat('a').format(dateTime); // Get the period (AM/PM)
-      return '$weekDay $hour $period';
+      return '$weekDay\n $hour $period';
     }
   }
 }

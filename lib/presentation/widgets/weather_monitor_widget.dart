@@ -55,7 +55,7 @@ class WeatherMonitorWidget extends StatelessWidget {
               ],
             ),
           );
-        } else if (state is LocationLoadFailed) {
+        } else if (state is WeatherDataLoadFailed) {
           return AspectRatio(
             aspectRatio: 16 / 7,
             child: Center(

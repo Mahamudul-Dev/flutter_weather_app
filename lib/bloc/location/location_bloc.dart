@@ -9,6 +9,9 @@ part 'location_state.dart';
 
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final LocationRepository repository;
+  String _selectedCountry = '';
+  String _selectedState = '';
+  String _selectedCity = '';
   LocationBloc(this.repository) : super(LocationInitial()) {
     on<FetchUserLocation>((event, emit) async {
       await repository.getUserLocation().then((location) {
@@ -19,5 +22,18 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         }
       });
     });
+
+
+    on<ChangeUserLocation>((event, emit) => emit(LocationLoaded(location: LocationModel(city: _selectedCity, country: _selectedCountry, state: _selectedState))));
+  }
+
+  void changeCountry(String newCountry){
+    _selectedCountry = newCountry;
+  }
+  void changeState(String newState){
+    _selectedState = newState;
+  }
+  void changeCity(String newCity){
+    _selectedCity = newCity;
   }
 }

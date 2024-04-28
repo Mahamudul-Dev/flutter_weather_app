@@ -9,14 +9,26 @@ class WeatherRepository {
   WeatherRepository(this.network);
 
   Future<CurrentWeatherResponseModel?> serializeCurrentWeather(
-      double lat, double lon) async {
+      double? lat, double? lon, String? city) async {
     try {
-      final response = await network.getCurrentWeather(lat, lon);
-      if (response.statusCode == HttpStatus.ok) {
-        final weather = CurrentWeatherResponseModel.fromJson(jsonDecode(jsonEncode(response.data)));
-        return weather;
+      if (lat != null && lon != null) {
+        final response = await network.getCurrentWeatherByLatLon(lat, lon);
+        if (response.statusCode == HttpStatus.ok) {
+          final weather = CurrentWeatherResponseModel.fromJson(
+              jsonDecode(jsonEncode(response.data)));
+          return weather;
+        } else {
+          return null;
+        }
       } else {
-        return null;
+        final response = await network.getCurrentWeatherByCity(city!);
+        if (response.statusCode == HttpStatus.ok) {
+          final weather = CurrentWeatherResponseModel.fromJson(
+              jsonDecode(jsonEncode(response.data)));
+          return weather;
+        } else {
+          return null;
+        }
       }
     } catch (e) {
       throw Exception(e);
@@ -24,14 +36,26 @@ class WeatherRepository {
   }
 
   Future<WeatherForcastResponseModel?> serializeForcastWeather(
-      double lat, double lon) async {
+      double? lat, double? lon, String? city) async {
     try {
-      final response = await network.getForcastWeather(lat, lon);
-      if (response.statusCode == HttpStatus.ok) {
-        final weather = WeatherForcastResponseModel.fromJson(jsonDecode(jsonEncode(response.data)));
-        return weather;
+      if (lat != null && lon != null) {
+        final response = await network.getForcastWeatherByLatLon(lat, lon);
+        if (response.statusCode == HttpStatus.ok) {
+          final weather = WeatherForcastResponseModel.fromJson(
+              jsonDecode(jsonEncode(response.data)));
+          return weather;
+        } else {
+          return null;
+        }
       } else {
-        return null;
+        final response = await network.getForcastWeatherByCity(city!);
+        if (response.statusCode == HttpStatus.ok) {
+          final weather = WeatherForcastResponseModel.fromJson(
+              jsonDecode(jsonEncode(response.data)));
+          return weather;
+        } else {
+          return null;
+        }
       }
     } catch (e) {
       throw Exception(e);

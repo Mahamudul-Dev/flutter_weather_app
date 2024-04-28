@@ -29,7 +29,7 @@ class ForcastWeatherCardWidget extends StatelessWidget {
         color: Colors.transparent,
         child: Container(
           width: 90.w,
-          padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 10.w),
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Config.BG_BLUE_LIGHT, Config.BG_BLUE_DARK],
@@ -38,7 +38,7 @@ class ForcastWeatherCardWidget extends StatelessWidget {
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // time
               Text(
@@ -47,6 +47,7 @@ class ForcastWeatherCardWidget extends StatelessWidget {
                   color: Config.DEFAULT_TEXT_COLOR_LIGHT,
                   fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.center,
               ),
 
               // icon

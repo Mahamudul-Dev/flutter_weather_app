@@ -9,3 +9,5 @@ sealed class LocationEvent extends Equatable {
 
 
 final class FetchUserLocation extends LocationEvent {}
+
+final class ChangeUserLocation extends LocationEvent {}
