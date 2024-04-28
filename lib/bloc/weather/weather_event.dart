@@ -6,3 +6,14 @@ sealed class WeatherEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+
+final class FetchWeatherData extends WeatherEvent {
+  final double lat;
+  final double lon;
+
+  const FetchWeatherData(this.lat, this.lon);
+
+  @override
+  List<Object> get props => [lat, lon];
+}
