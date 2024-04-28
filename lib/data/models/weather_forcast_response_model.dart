@@ -62,11 +62,11 @@ class City {
     });
 
     factory City.fromJson(Map<String, dynamic> json) => City(
-        id: json["id"],
+        id: json["id"]?.toDouble(),
         name: json["name"],
         coord: json["coord"] == null ? null : Coord.fromJson(json["coord"]),
         country: json["country"],
-        population: json["population"],
+        population: json["population"]?.toDouble(),
         timezone: json["timezone"].toDouble(),
         sunrise: json["sunrise"].toDouble(),
         sunset: json["sunset"].toDouble(),
@@ -128,12 +128,12 @@ class WeatherElement {
     });
 
     factory WeatherElement.fromJson(Map<String, dynamic> json) => WeatherElement(
-        dt: json["dt"],
+        dt: json["dt"]?.toDouble(),
         main: json["main"] == null ? null : Main.fromJson(json["main"]),
         weather: json["weather"] == null ? [] : List<Weather>.from(json["weather"]!.map((x) => Weather.fromJson(x))),
         clouds: json["clouds"] == null ? null : Clouds.fromJson(json["clouds"]),
         wind: json["wind"] == null ? null : Wind.fromJson(json["wind"]),
-        visibility: json["visibility"],
+        visibility: json["visibility"]?.toDouble(),
         pop: json["pop"].toDouble(),
         sys: json["sys"] == null ? null : Sys.fromJson(json["sys"]),
         dtTxt: json["dt_txt"] == null ? null : DateTime.parse(json["dt_txt"]),
@@ -160,7 +160,7 @@ class Clouds {
     });
 
     factory Clouds.fromJson(Map<String, dynamic> json) => Clouds(
-        all: json["all"].toDouble(),
+        all: json["all"]?.toDouble(),
     );
 
     Map<String, dynamic> toJson() => {
