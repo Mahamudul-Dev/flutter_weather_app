@@ -18,7 +18,7 @@ Flutter Weather is a comprehensive weather application designed to provide users
 ```git clone https://github.com/Mahamudul-Dev/flutter_weather_app.git```
 
 2. Run `flutter pub get` command for install all required packages.
-3. Change OPEN_WEATHER_APP_ID from `lib/data/utils/config.dart`. You can achive API key from ![Open Weather](https://openweathermap.org/api)
+3. Change OPEN_WEATHER_APP_ID from `lib/data/utils/config.dart`. You can achive API key from [Open Weather](https://openweathermap.org/api)
 ![Config File Screenshot](https://github.com/Mahamudul-Dev/flutter_weather_app/blob/main/screenshots/config-instruction.png)
 4. Now you can build apk via running `flutter build apk`
 ## 🚀 About Me
