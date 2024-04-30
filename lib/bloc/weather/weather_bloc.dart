@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-
 import '../../data/models/models.dart';
 import '../../repository/repository.dart';
 
@@ -14,26 +14,76 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   WeatherBloc(this.repository) : super(WeatherInitial()) {
     on<FetchWeatherData>(
       (event, emit) async {
-        try {
-          final currentWeather =
-              await repository.serializeCurrentWeather(event.lat, event.lon, event.city);
-          final forcastWeather =
-              await repository.serializeForcastWeather(event.lat, event.lon, event.city);
-          if (currentWeather != null && forcastWeather != null) {
-            emit(WeatherDataLoaded(
-                currentWeather.weather!.first,
-                currentWeather.wind!,
-                currentWeather.main!,
-                currentWeather.sys!,
-                forcastWeather.list!));
-          } else {
+        final connectivityResult = await (Connectivity().checkConnectivity());
+
+        if (connectivityResult.contains(ConnectivityResult.none)) {
+          // User is offline, try to fetch weather from offline
+          try {
+            final currentWeather = await repository.getOfflineCurrentWeather();
+            final forcastWeather = await repository.getOfflineForecastWeather();
+
+            if (currentWeather != null) {
+              final offlineWeatherData = WeatherModel(
+                  description: currentWeather.description,
+                  icon: currentWeather.icon);
+              final offlineWindData = WindModel(
+                  speed: currentWeather.speed,
+                  deg: currentWeather.deg,
+                  gust: currentWeather.gust);
+              final offlineMainWeatherData = MainWeatherModel(
+                  temp: currentWeather.temp,
+                  feelsLike: currentWeather.feelsLike,
+                  tempMin: currentWeather.tempMin,
+                  tempMax: currentWeather.tempMax,
+                  pressure: currentWeather.pressure,
+                  humidity: currentWeather.humidity,
+                  seaLevel: currentWeather.seaLevel,
+                  grndLevel: currentWeather.grndLevel);
+              final offlineSys = SysModel(
+                  sunrise: currentWeather.sunrise,
+                  sunset: currentWeather.sunset);
+
+              final List<WeatherElement> offlineWeatherForecast = forcastWeather
+                      ?.weatherList
+                      ?.map((e) => WeatherElement(
+                          dt: e.datetime,
+                          main: Main(temp: e.temp),
+                          weather: [Weather(icon: e.icon)]))
+                      .toList() ??
+                  [];
+
+              emit(WeatherDataLoaded(offlineWeatherData, offlineWindData,
+                  offlineMainWeatherData, offlineSys, offlineWeatherForecast));
+            } else {
+              emit(const WeatherDataLoadFailed(
+                  'Failed to get weather information.\nCheck your connectivity!'));
+            }
+          } catch (e) {
             emit(const WeatherDataLoadFailed(
                 'Failed to get weather information.'));
           }
-        } catch (e) {
-          debugPrint(e.toString());
-          emit(const WeatherDataLoadFailed(
-              'Failed to get weather information.'));
+        } else {
+          try {
+            final currentWeather = await repository.getCurrentWeather(
+                event.lat, event.lon, event.city, true);
+            final forcastWeather = await repository.getForcastWeather(
+                event.lat, event.lon, event.city, true);
+            if (currentWeather != null && forcastWeather != null) {
+              emit(WeatherDataLoaded(
+                  currentWeather.weather!.first,
+                  currentWeather.wind!,
+                  currentWeather.main!,
+                  currentWeather.sys!,
+                  forcastWeather.list!));
+            } else {
+              emit(const WeatherDataLoadFailed(
+                  'No weather data available for selected area.'));
+            }
+          } catch (e) {
+            debugPrint(e.toString());
+            emit(const WeatherDataLoadFailed(
+                'Failed to get weather information.'));
+          }
         }
       },
     );

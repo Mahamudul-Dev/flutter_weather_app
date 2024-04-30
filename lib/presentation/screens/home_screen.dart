@@ -42,6 +42,23 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const Gap(20),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      'Next 5 Days Weather Overview',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: Config.DEFAULT_TEXT_COLOR_LIGHT,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(10),
               SizedBox(
                 height: 170.h,
                 child: BlocBuilder<WeatherBloc, WeatherState>(

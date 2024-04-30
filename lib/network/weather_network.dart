@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import '../data/utils/utils.dart';
 
 class WeatherNetwork {
-  final _dio = Dio(BaseOptions(baseUrl: Config.BASE));
+  final Dio dio;
+  WeatherNetwork({
+    required this.dio,
+  });
 
-  Future<Response> getCurrentWeatherByLatLon(double lat, double lon) async {
+  Future<Response> requestCurrentWeatherByLatLon(double lat, double lon) async {
     try {
-      final response = await _dio.get(Config.CURRENT_WEATHER,
+      final response = await dio.request(Config.CURRENT_WEATHER,
       queryParameters: {'lat':lat.toString(), 'lon':lon.toString(), 'appId':Config.OPEN_WEATHER_APP_ID},
       );
       debugPrint(jsonEncode(response.data));
@@ -21,9 +24,9 @@ class WeatherNetwork {
   }
 
 
-  Future<Response> getCurrentWeatherByCity(String city) async {
+  Future<Response> requestCurrentWeatherByCity(String city) async {
     try {
-      final response = await _dio.get(Config.CURRENT_WEATHER,
+      final response = await dio.request(Config.CURRENT_WEATHER,
       queryParameters: {'q':city, 'appId':Config.OPEN_WEATHER_APP_ID},
       );
       debugPrint(jsonEncode(response.data));
@@ -34,9 +37,9 @@ class WeatherNetwork {
   }
 
 
-  Future<Response> getForcastWeatherByLatLon(double lat, double lon) async {
+  Future<Response> requestForcastWeatherByLatLon(double lat, double lon) async {
     try {
-      final response = await _dio.get(Config.FORCAST_WEATHER,
+      final response = await dio.request(Config.FORCAST_WEATHER,
        queryParameters: {'lat':lat.toString(), 'lon':lon.toString(), 'appId':Config.OPEN_WEATHER_APP_ID},
        );
       debugPrint(jsonEncode(response.data));
@@ -46,9 +49,9 @@ class WeatherNetwork {
     }
   }
 
-  Future<Response> getForcastWeatherByCity(String city) async {
+  Future<Response> requestForcastWeatherByCity(String city) async {
     try {
-      final response = await _dio.get(Config.FORCAST_WEATHER,
+      final response = await dio.request(Config.FORCAST_WEATHER,
        queryParameters: {'q':city, 'appId':Config.OPEN_WEATHER_APP_ID},
        );
       debugPrint(jsonEncode(response.data));

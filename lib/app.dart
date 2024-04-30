@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'app_theme.dart';
 import 'bloc/location/location_bloc.dart';
 import 'bloc/weather/weather_bloc.dart';
 import 'data/utils/utils.dart';
@@ -16,7 +18,7 @@ class FlutterWeatherApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (context)=> LocationRepository()),
-        RepositoryProvider(create: (context)=> WeatherRepository(WeatherNetwork())),
+        RepositoryProvider(create: (context)=> WeatherRepository(WeatherNetwork(dio: Dio(BaseOptions(baseUrl: Config.BASE))))),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -31,11 +33,7 @@ class FlutterWeatherApp extends StatelessWidget {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               title: Config.APP_NAME,
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-                textTheme:
-                    Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
-              ),
+              theme: AppTheme.APP_THEME,
               home: child,
             );
           },

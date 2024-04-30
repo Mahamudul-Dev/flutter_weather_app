@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_weather/bloc/location/location_bloc.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../bloc/weather/weather_bloc.dart';
@@ -18,42 +17,40 @@ class WeatherMonitorWidget extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         if (state is WeatherDataLoaded) {
-          return AspectRatio(
-            aspectRatio: 16 / 7,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // weather
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: LottieBuilder.asset(
-                        AssetManager.WEATHER_ANIM[state.currentWeather.icon]!,
-                      ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // weather
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: LottieBuilder.asset(
+                      AssetManager.WEATHER_ANIM[state.currentWeather.icon]!,
                     ),
-                    Text(
-                      '${(state.currentsMainWeather.temp! - 273.15).toStringAsFixed(1)}${String.fromCharCode(0x00B0)}',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontSize: 100.sp,
-                        fontWeight: FontWeight.w800,
-                        color: Config.DEFAULT_TEXT_COLOR_LIGHT,
-                      ),
-                    ),
-                  ],
-                ),
-                // current state
-            
-                Text(
-                  '${context.read<WeatherBloc>().capitalizeString(state.currentWeather.description!)} - H:${(state.currentsMainWeather.tempMax! - 273.15).toStringAsFixed(1)}${String.fromCharCode(0x00B0)} L:${(state.currentsMainWeather.tempMin! - 273.15).toStringAsFixed(1)}${String.fromCharCode(0x00B0)}',
-                  style: theme.textTheme.labelMedium?.copyWith(
+                  ),
+                  Text(
+                    '${(state.currentsMainWeather.temp! - 273.15).toStringAsFixed(1)}${String.fromCharCode(0x00B0)}',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontSize: 100.sp,
+                      fontWeight: FontWeight.w800,
                       color: Config.DEFAULT_TEXT_COLOR_LIGHT,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
+                    ),
+                  ),
+                ],
+              ),
+              // current state
+          
+              Text(
+                '${context.read<WeatherBloc>().capitalizeString(state.currentWeather.description!)} - H:${(state.currentsMainWeather.tempMax! - 273.15).toStringAsFixed(1)}${String.fromCharCode(0x00B0)} L:${(state.currentsMainWeather.tempMin! - 273.15).toStringAsFixed(1)}${String.fromCharCode(0x00B0)}',
+                style: theme.textTheme.labelMedium?.copyWith(
+                    color: Config.DEFAULT_TEXT_COLOR_LIGHT,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
           );
         } else if (state is WeatherDataLoadFailed) {
           return AspectRatio(

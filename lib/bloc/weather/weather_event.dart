@@ -14,5 +14,5 @@ final class FetchWeatherData extends WeatherEvent {
   final String? city;
 
   const FetchWeatherData(this.lat, this.lon, this.city);
-
 }
+

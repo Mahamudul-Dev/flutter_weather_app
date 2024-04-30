@@ -80,10 +80,10 @@ class WeatherDetailsSheet extends StatelessWidget {
                 ),
                 ListTile(
                   leading:
-                      LottieBuilder.asset(AssetManager.WEATHER_ANIM['50d']!),
+                      LottieBuilder.asset(AssetManager.WIND_ANIM),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  title: Row(
+                  title: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(

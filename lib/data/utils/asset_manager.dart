@@ -22,6 +22,7 @@ class AssetManager {
     '50d': 'assets/anim/mist.json',
     '50n': 'assets/anim/mist.json',
   };
+  static const String WIND_ANIM = 'assets/anim/wind.json';
 
   // images
   static const String SUNSET = 'assets/images/sunset.png';
